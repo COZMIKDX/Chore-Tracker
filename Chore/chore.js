@@ -20,24 +20,24 @@ const choreList = [
     "clean dishes",
     "put away dishes"
 ];
-const choreLineupPath = 'Chore/choreLineup.json'
+const choreLineupPath = 'Chore/choreLineup.json';
 
 
-function getNextChore(currentChore) {
+export function getNextChore(currentChore) {
     let currentIndex = choreList.indexOf(currentChore);
     return choreList[(currentIndex + 1) % choreList.length];
 }
 
-function loadChores() {
+export function loadChores() {
     let data = fs.readFileSync(choreLineupPath);
     return JSON.parse(data);
 }
 
-function saveChores(data) {
+export function saveChores(data) {
     try {
         fs.writeFileSync(choreLineupPath,JSON.stringify(data), 'utf-8');
         console.log("File written.");
     } catch (error) {
-         console.log("File write failed.")
+         console.log("File write failed.");
     }
 }
