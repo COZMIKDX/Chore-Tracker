@@ -36,4 +36,13 @@ function saveChores(data) {
     }
 }
 
-module.exports = { getNextChore, loadChores, saveChores }
+function formatReadable(lineup) {
+    let readable = "";
+    for (const [person, chores] of Object.entries(lineup)) {
+        readable += `${person}: ${chores.join(", ")}\n`
+    }
+
+    return readable;
+}
+
+module.exports = { getNextChore, loadChores, saveChores, formatReadable }
