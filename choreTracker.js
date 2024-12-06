@@ -4,6 +4,8 @@
  * chore array. To prevent repeating a chore, don't start a person with two chores next to each other on the list.
  */
 const chore = require("./Chore/chore.js");
+const { Client, Events, GatewayIntentBits } = require('discord.js');
+const { discordToken, targetChannelID } = require('./config.json');
 
 let lineup = chore.loadChores();
 
@@ -15,4 +17,22 @@ function changeChores(lineup) {
     return newLineup;
 }
 
-console.log(changeChores(lineup));
+
+
+const client = new Client({ intents: [GatewayIntentBits.Guilds] })
+client.once(Events.ClientReady, readyClient => {
+    const newLineup = changeChores(lineup);
+
+    let channel = client.channels.cache.get(targetChannelID);
+    channel.send(`Chore time!\n${chore.formatReadable(newLineup)}`);
+    chore.saveChores(newLineup);
+    console.log("Chores updated.");
+    
+
+    client.destroy().then(() => {
+        console.log('Shutting down.');
+        process.exit();
+    });
+});
+
+client.login(discordToken);
