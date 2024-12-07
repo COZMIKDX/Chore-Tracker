@@ -5,7 +5,12 @@
  */
 const chore = require("./Chore/chore.js");
 const { Client, Events, GatewayIntentBits } = require('discord.js');
-const { discordToken, targetChannelID } = require('./config.json');
+try {
+    const { discordToken, targetChannelID } = require('./config.json');
+} catch {
+    console.log("config.json file not found.\nRun \"$ npm run configsetup\"");
+    process.exit();
+}
 
 let lineup = chore.loadChores();
 
