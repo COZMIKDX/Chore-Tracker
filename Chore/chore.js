@@ -20,9 +20,12 @@ const choreLineupPath = 'Chore/choreLineup.json';
 
 // Input type is Number.
 function getNextChore(currentChoreKey) {
-
     // Note: The chores are numbered starting at 1. '.length' isn't 0 indexed.
-    return (currentChoreKey + 1) % Object.keys(choreList).length;
+    let choreKey = currentChoreKey + 1;
+    if (choreKey > Object.keys(choreList).length) {
+        choreKey = 1;
+    }
+    return choreKey;
 }
 
 function loadChores() {
@@ -40,6 +43,7 @@ function saveChores(data) {
 }
 
 function formatReadable(lineup) {
+    let readable = "";
     for (const [person, chores] of Object.entries(lineup)) {
         let list = [];
         for (const choreNum of chores) {
