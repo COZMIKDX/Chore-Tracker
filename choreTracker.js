@@ -3,8 +3,9 @@
  * It goes through each chore a person has when it is time to switch chores and simply assigns the next chore in the
  * chore array. To prevent repeating a chore, don't start a person with two chores next to each other on the list.
  */
-const chore = require("./Chore/chore.js");
+
 const { Client, Events, GatewayIntentBits } = require('discord.js');
+const chore = require("./Chore/chore.js");
 try {
     const { discordToken, targetChannelID } = require('./config.json');
 } catch {
