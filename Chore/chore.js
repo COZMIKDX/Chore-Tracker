@@ -55,4 +55,13 @@ function formatReadable(lineup) {
     return readable;
 }
 
-module.exports = { getNextChore, loadChores, saveChores, formatReadable }
+function getUserWithChore(choreId) {
+    const choreLineup = loadChores();
+    for (const [person, chores] of Object.entries(choreLineup)) {
+        if (chores.includes(choreId)) {
+            return person;
+        }
+    } 
+}
+
+module.exports = { getNextChore, loadChores, saveChores, formatReadable, getUserWithChore }
