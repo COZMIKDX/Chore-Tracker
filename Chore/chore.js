@@ -49,7 +49,7 @@ function formatReadable(lineup) {
         for (const choreNum of chores) {
             list.push(choreList[choreNum]);
         }
-        readable += `${person}: ${list.join(", ")}\n`
+        readable += `<@${person}>: ${list.join(", ")}\n`
     }
 
     return readable;
