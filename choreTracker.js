@@ -6,8 +6,10 @@
 
 const { Client, Events, GatewayIntentBits } = require('discord.js');
 const chore = require("./Chore/chore.js");
+const reminders = require("./Chore/reminder.js");
+let config;
 try {
-    const { discordToken, targetChannelID } = require('./config.json');
+    config = require('./config.json');
 } catch {
     console.log("config.json file not found.\nRun \"$ npm run configsetup\"");
     process.exit();
@@ -27,13 +29,23 @@ function changeChores(lineup) {
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds] })
 client.once(Events.ClientReady, readyClient => {
-    const newLineup = changeChores(lineup);
+    // This will act upon valid command flags and do nothing otherwise.
 
-    let channel = client.channels.cache.get(targetChannelID);
-    channel.send(`Chore time!\n${chore.formatReadable(newLineup)}`);
-    chore.saveChores(newLineup);
-    console.log("Chores updated.");
-    
+    const reminderIndex = process.argv.indexOf("-reminder");
+    if (reminderIndex > -1) {
+        let reminderValue = process.argv[reminderIndex + 1];
+        reminders.sendReminder(client, config.targetChannelID, reminderValue);
+    }
+
+    const lineupChangeIndex = process.argv.indexOf("-lineupChange");
+    if (lineupChangeIndex > -1) {
+        const newLineup = changeChores(lineup);
+
+        let channel = client.channels.cache.get(config.targetChannelID);
+        channel.send(`Chore time!\n${chore.formatReadable(newLineup)}`);
+        chore.saveChores(newLineup);
+        console.log("Chores updated.");
+    }
 
     client.destroy().then(() => {
         console.log('Shutting down.');
@@ -41,4 +53,7 @@ client.once(Events.ClientReady, readyClient => {
     });
 });
 
-client.login(discordToken);
+// I only really want this to run if I have args to tell it what to do.
+if (process.argv.length > 2) {
+    client.login(config.discordToken);
+}
