@@ -47,6 +47,13 @@ client.once(Events.ClientReady, readyClient => {
         console.log("Chores updated.");
     }
 
+    const reprintIndex = process.argv.indexOf("-reprint");
+    if (reprintIndex > -1) {
+        let channel = client.channels.cache.get(config.targetChannelID);
+        channel.send(`Chore List\n${chore.formatReadable(lineup)}`)
+        console.log("Chores reprinted. Check discord channel.");
+    }
+
     client.destroy().then(() => {
         console.log('Shutting down.');
         process.exit();
