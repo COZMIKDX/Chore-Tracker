@@ -1,0 +1,14 @@
+{
+    "chore-reminder": {
+        "mention": true,
+        "userId": "157899020054822912",
+        "chore": null,
+        "content": "Do your chores!"
+    },
+    "trash-reminder": {
+        "mention": true,
+        "userId": null,
+        "chore": 6,
+        "content": "Take out the trash"
+    }
+}

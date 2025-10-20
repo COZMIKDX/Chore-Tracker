@@ -49,10 +49,19 @@ function formatReadable(lineup) {
         for (const choreNum of chores) {
             list.push(choreList[choreNum]);
         }
-        readable += `${person}: ${list.join(", ")}\n`
+        readable += `<@${person}>: ${list.join(", ")}\n`
     }
 
     return readable;
 }
 
-module.exports = { getNextChore, loadChores, saveChores, formatReadable }
+function getUserWithChore(choreId) {
+    const choreLineup = loadChores();
+    for (const [person, chores] of Object.entries(choreLineup)) {
+        if (chores.includes(choreId)) {
+            return person;
+        }
+    } 
+}
+
+module.exports = { getNextChore, loadChores, saveChores, formatReadable, getUserWithChore }
