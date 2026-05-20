@@ -2,6 +2,11 @@
  * A simple chore tracking app.
  * It goes through each chore a person has when it is time to switch chores and simply assigns the next chore in the
  * chore array. To prevent repeating a chore, don't start a person with two chores next to each other on the list.
+ * 
+ * Usage: I made this to only run when it's time to change chores or send reminders.
+ *   That way it's not constantly running on my pi zero.
+ *   Run the script with the appropriate command line arg to do what you need.
+ *   Use Cron to schedule those commands.
  */
 
 const { Client, Events, GatewayIntentBits } = require('discord.js');
@@ -31,12 +36,14 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds] })
 client.once(Events.ClientReady, readyClient => {
     // This will act upon valid command flags and do nothing otherwise.
 
+    // A bunch of command line args handling.
     const reminderIndex = process.argv.indexOf("-reminder");
     if (reminderIndex > -1) {
         let reminderValue = process.argv[reminderIndex + 1];
         reminders.sendReminder(client, config.targetChannelID, reminderValue);
     }
 
+    // Generate the next chore lineup on command.
     const lineupChangeIndex = process.argv.indexOf("-lineupChange");
     if (lineupChangeIndex > -1) {
         const newLineup = changeChores(lineup);
@@ -47,6 +54,7 @@ client.once(Events.ClientReady, readyClient => {
         console.log("Chores updated.");
     }
 
+    // Repost the current chore lineup on discord.
     const reprintIndex = process.argv.indexOf("-reprint");
     if (reprintIndex > -1) {
         let channel = client.channels.cache.get(config.targetChannelID);
