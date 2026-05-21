@@ -10,5 +10,17 @@
         "userId": null,
         "chore": 6,
         "content": "Take out the trash"
-    }
+    },
+    "dishes-reminder": {
+        "mention": true,
+        "userId": null,
+        "chore": 7,
+        "content": "Do the dishes"
+    },
+    "feed-turtles-reminder": {
+        "mention": false,
+        "userId": null,
+        "chore": null,
+        "content": "Feed the turtles"
+    },
 }
